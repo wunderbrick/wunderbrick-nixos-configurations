@@ -1,0 +1,5 @@
+ssh_config.nix
+hardware-configuration.nix
+which-machine.nix
+shared/shells/euterpea/*.cfg
+.projectile

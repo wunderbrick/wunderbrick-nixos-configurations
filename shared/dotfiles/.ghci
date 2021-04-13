@@ -1,0 +1,13 @@
+-- Need to move into a Nix shell or figure out some other way of ghci picking up packages installed systemwide by Nix
+-- Pretty printing of it
+-- import IPPrint.Colored
+-- :set -interactive-print=IPPrint.Colored.cpprint
+-- :def cp (\_ -> return ":set -interactive-print=IPPrint.Colored.cpprint")
+-- :def ncp (\_ -> return ":set -interactive-print=print")
+
+:set prompt "λ "
+:def x const $ return ":!clear"
+:def X const $ return ":!clear"
+:def sm const $ return ":show modules"
+:def nwt const $ return ":set -Wno-type-defaults"
+:def ywt const $ return ":set -Wtype-defaults"

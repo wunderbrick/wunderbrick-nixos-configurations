@@ -1,0 +1,39 @@
+<eww>
+    <includes>
+		<!-- Put your <file>'s in here -->
+	</includes>
+
+	<definitions>
+		<def name="streaming_sites">
+        	<box orientation="h" space-evenly="true">
+        		<button class="font-awesome-icon" onclick="~/.config/eww/scripts/open-chromium.sh"></button>
+            </box>
+        </def>
+
+		<def name="kodi">
+        	<box orientation="h" space-evenly="true">
+        		<button class="font-awesome-icon" onclick="~/.config/eww/scripts/open-kodi.sh"></button>
+            </box>
+        </def>
+	</definitions>
+
+	<variables>
+		<!-- Put your <script-var> and <var>'s in here -->
+	</variables>
+
+	<windows>
+		<window name="streaming_sites" stacking="bg">
+			<geometry x="50px" y="50px" width="100px" height="100px"/>
+				<widget>
+        			<streaming_sites/>
+      			</widget>
+    	</window>
+
+		<window name="kodi" stacking="bg">
+			<geometry x="50px" y="200px" width="100px" height="100px"/>
+				<widget>
+        			<kodi/>
+      			</widget>
+    	</window>
+	</windows>
+</eww>
