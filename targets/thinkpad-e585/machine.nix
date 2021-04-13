@@ -7,7 +7,7 @@ let
   allPkgs = import ../../shared/packages/pkgs-list.nix { inherit pkgs; };
   sway =
     import ../../shared/system-attributes/sway.nix { inherit config pkgs; };
-  ssh_config = import ../../ssh_config.nix;
+  sshConfig = import ../../shared/ssh_config.nix;
 
   selectedPkgs = with allPkgs;
     nixExtras ++ haskellStuff ++ arduinoTools ++ devDatabase ++ sharedDevTools
@@ -112,7 +112,7 @@ in {
     };
   };
 
-  programs.ssh.extraConfig = ssh_config;
+  programs.ssh.extraConfig = sshConfig;
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database
