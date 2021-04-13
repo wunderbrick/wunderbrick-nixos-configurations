@@ -16,7 +16,7 @@
       targets = map (pkgs.lib.removeSuffix ".nix") (
         pkgs.lib.attrNames (
           pkgs.lib.filterAttrs
-            (_: entryType: entryType == "regular")
+            (_: entryType: entryType == "directory")
             (builtins.readDir ./targets)
         )
       );

@@ -1,6 +1,9 @@
 thinkpad-e585:
 	nixos-rebuild -I nixos-config=./targets/thinkpad-e585/machine.nix switch
 
+flake-thinkpad-e585:
+	nixos-rebuild switch --flake .#thinkpad-e585
+
 thinkpad-x1:
 	nixos-rebuild -I nixos-config=./targets/thinkpad-x1/machine.nix --target-host thinkpad-x1 switch
 
