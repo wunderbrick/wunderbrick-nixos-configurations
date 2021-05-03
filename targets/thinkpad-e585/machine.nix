@@ -56,7 +56,7 @@ in {
   };
 
   fileSystems."/mnt/truenas" = {
-    device = "192.168.10.143:/mnt/mainpool/mainset/library";
+    device = "192.168.2.11:/mnt/mainpool/mainset/library";
     fsType = "nfs";
     options = [ "rw" "x-systemd.automount" "noauto" ];
   };

@@ -67,7 +67,7 @@
       interface = "wlp5s0";
       ssid = "VeryFunctional";
       # TODO: Handle secrets better
-      wpaPassphrase = import ./passphrase.nix;
+      wpaPassphrase = "duck flash single plasma hero 19"; #import ./passphrase.nix;
       hwMode = "g";
       channel = 10;
     };
@@ -84,6 +84,9 @@
         dhcp-range=192.168.1.10,192.168.1.254,24h
         dhcp-range=192.168.2.10,192.168.2.254,24h
         dhcp-range=192.168.3.10,192.168.3.254,24h
+        dhcp-host=truenas,192.168.2.11
+        dhcp-host=truenas-transmission-vm,192.168.2.12
+        dhcp-host=truenas-irc-client,192.168.2.13
       '';
     };
   };
