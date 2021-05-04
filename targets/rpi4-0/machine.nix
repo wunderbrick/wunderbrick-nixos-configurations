@@ -43,8 +43,8 @@
 
   services.xserver = {
     enable = true;
-    displayManager.lightdm.enable = true;
-    desktopManager.gnome3.enable = true;
+    displayManager.gdm = { enable = true; };
+    windowManager.i3 = { enable = true; };
     videoDrivers = [ "modesetting" ];
   };
   boot.loader.raspberryPi.firmwareConfig = ''
@@ -57,21 +57,33 @@
     networkmanager = {
       enable = true;
     };
+    firewall = { allowedTCPPorts = [ 22 ]; };
   };
 
   environment.systemPackages = with pkgs; [
-    wget htop
+    kodi
+    ungoogled-chromium
+    arandr
+    redshift
+    dolphin
+    gnome3.nautilus
+    gnome3.gvfs
+    mpd
+    alacritty
+    wget
+    feh
+    compton
+    htop
+    pavucontrol
    ];
 
   users = {
     mutableUsers = false;
     users.root = {
       password = "just a placeholder";
-    };
-    users.anormaluser = {
-      isNormalUser = true;
-      password = "just a placeholder";
-      extraGroups = [ "wheel" ];
+      openssh.authorizedKeys.keys = [
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCxejxxPoOT3tCYpd74WXnY4r58kCr41EnZMsNGnsDESy4iuLSxG8N322PfpnU+/6KfVUonT2JZ1B93QXvRnwb+dOU1MOy1kxJtTJ1i+HLRW7OR+AaqF/LM+fTLR6tMZJzqCDnF94fyrS0QY/o32TXsb4Qy52YFkYxQCzXRy9iHxPetqc9FSZaOtT/C4dstLU8uxrOPUSlhtkqTGsmM5M2xXi0hUZBp6IxjxC/T6tMTPxjYlhDDBDnK5IglQtTHhBAj9i0+ho76e2U/e7cjiqVRDmJipeB8OYBbkijTGCYr5OV/3V1lKA4cxH9TEg79aRWGyvL/S3Rmlhp+vGXm5VQdyBzzNMI+Syfo3e08GF8iIzXy5IoprfRg/anIjHbcW4HkxC0rRur4na2vf9SCoSmptN3C+TgLrybSC1h3B5nBNcIKCgWfFn3NxJkdHD8mx254+P42+v4U1rz8f6UZoeuQHC4cQIHTGr+Wfu4UhvAVzf68ZZDaPZ97itHf78TPjawjxKJVY3lcevdz/y0QdqFOVZX0F8Jyf6jbOGmxgfQ3sH7Vowd15dJM6jzxFM+oL7vQ6CBp8KQiE+8/BpdkzZVr1oijES7/h4tT8iJ16VMwwKrssTmIOBTY2JHOu/UoqjUtEqRbbdqEfOdeaSW119PPP2/oDhrBvnhaEJgtJdyhQ== awp@nixos-e585"
+        ];
     };
   };
 
