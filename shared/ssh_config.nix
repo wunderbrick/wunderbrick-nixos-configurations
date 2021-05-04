@@ -32,4 +32,10 @@ Host thinkpad-x1 192.168.3.96
 Hostname 192.168.3.96
 PreferredAuthentications publickey
 IdentityFile /home/awp/.ssh_lan/nixos_media_player/id_rsa
+
+### rpi4-0 ###
+Host rpi4-0 192.168.3.11
+Hostname rpi4-0
+PreferredAuthentications publickey
+IdentityFile /home/awp/.ssh_lan/rpi4-0/id_rsa
 ''

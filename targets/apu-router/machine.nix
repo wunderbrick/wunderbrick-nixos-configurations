@@ -87,6 +87,7 @@
         dhcp-host=truenas,192.168.2.11
         dhcp-host=truenas-transmission-vm,192.168.2.12
         dhcp-host=truenas-irc-client,192.168.2.13
+        dhcp-host=rpi4-0,192.168.3.11
       '';
     };
   };

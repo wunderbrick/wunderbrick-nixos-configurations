@@ -45,3 +45,11 @@ flake-apu-router:
 
 # flake-thinkpad-t400:
 #	nixos-rebuild switch --flake .#thinkpad-t400 --target-host thinkpad-t400 --build-host localhost
+
+############################################################################################################################
+
+rpi4-0:
+	nixos-rebuild -I nixos-config=./targets/rpi4-0/machine.nix --target-host apu-router switch
+
+flake-rpi4-0:
+	nixos-rebuild switch --flake .#rpi4-0 --target-host apu-router --build-host localhost

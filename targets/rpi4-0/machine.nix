@@ -4,6 +4,10 @@
  # This configuration worked on 09-03-2021 nixos-unstable @ commit 102eb68ceec
  # The image used https://hydra.nixos.org/build/134720986
 
+  imports = [
+    #./hardware-configuration.nix # relevant options already in this file
+  ];
+
   boot = {
     kernelPackages = pkgs.linuxPackages_rpi4;
     tmpOnTmpfs = true;
@@ -28,25 +32,25 @@
   # Required for the Wireless firmware
   hardware.enableRedistributableFirmware = true;
 
-  hardware.opengl = {
-    enable = true;
-    setLdLibraryPath = true;
-    package = pkgs.mesa_drivers;
-  };
-  hardware.deviceTree = {
-    kernelPackage = pkgs.linux_rpi4;
-    overlays = [ "${pkgs.device-tree_rpi.overlays}/vc4-fkms-v3d.dtbo" ];
-  };
+  #hardware.opengl = {
+  #  enable = true;
+  #  setLdLibraryPath = true;
+  #  package = pkgs.mesa_drivers;
+  #};
+  #hardware.deviceTree = {
+  #  kernelPackage = pkgs.linux_rpi4;
+  #  overlays = [ "${pkgs.device-tree_rpi.overlays}/vc4-fkms-v3d.dtbo" ];
+  #};
 
   hardware.pulseaudio.enable = true;
   sound.enable = true;
 
-  services.xserver = {
-    enable = true;
-    displayManager.gdm = { enable = true; };
-    windowManager.i3 = { enable = true; };
-    videoDrivers = [ "modesetting" ];
-  };
+  #services.xserver = {
+  #  enable = true;
+  #  displayManager.gdm = { enable = true; };
+  #  windowManager.i3 = { enable = true; };
+  #  videoDrivers = [ "modesetting" ];
+  #};
   boot.loader.raspberryPi.firmwareConfig = ''
     gpu_mem=192
     dtparam=audio=on
@@ -61,20 +65,19 @@
   };
 
   environment.systemPackages = with pkgs; [
-    kodi
-    ungoogled-chromium
-    arandr
-    redshift
-    dolphin
-    gnome3.nautilus
-    gnome3.gvfs
-    mpd
+    #kodi
+    #ungoogled-chromium
+    #arandr
+    #redshift
+    #dolphin
+    #gnome3.nautilus
+    #gnome3.gvfs
     alacritty
     wget
-    feh
-    compton
+    #feh
+    #compton
     htop
-    pavucontrol
+    #pavucontrol
    ];
 
   users = {
@@ -82,7 +85,7 @@
     users.root = {
       password = "just a placeholder";
       openssh.authorizedKeys.keys = [
-          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCxejxxPoOT3tCYpd74WXnY4r58kCr41EnZMsNGnsDESy4iuLSxG8N322PfpnU+/6KfVUonT2JZ1B93QXvRnwb+dOU1MOy1kxJtTJ1i+HLRW7OR+AaqF/LM+fTLR6tMZJzqCDnF94fyrS0QY/o32TXsb4Qy52YFkYxQCzXRy9iHxPetqc9FSZaOtT/C4dstLU8uxrOPUSlhtkqTGsmM5M2xXi0hUZBp6IxjxC/T6tMTPxjYlhDDBDnK5IglQtTHhBAj9i0+ho76e2U/e7cjiqVRDmJipeB8OYBbkijTGCYr5OV/3V1lKA4cxH9TEg79aRWGyvL/S3Rmlhp+vGXm5VQdyBzzNMI+Syfo3e08GF8iIzXy5IoprfRg/anIjHbcW4HkxC0rRur4na2vf9SCoSmptN3C+TgLrybSC1h3B5nBNcIKCgWfFn3NxJkdHD8mx254+P42+v4U1rz8f6UZoeuQHC4cQIHTGr+Wfu4UhvAVzf68ZZDaPZ97itHf78TPjawjxKJVY3lcevdz/y0QdqFOVZX0F8Jyf6jbOGmxgfQ3sH7Vowd15dJM6jzxFM+oL7vQ6CBp8KQiE+8/BpdkzZVr1oijES7/h4tT8iJ16VMwwKrssTmIOBTY2JHOu/UoqjUtEqRbbdqEfOdeaSW119PPP2/oDhrBvnhaEJgtJdyhQ== awp@nixos-e585"
+          "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDCX+02jq2ocfNBIhSdwpoUleICaycOX63ng/vGg7BQkLQ5liipWnB3Sk6AzqFPztxfmVsCBIIcQOssCCWSXrzH6y9VTpa6CvL1A0EGBtC2XZJnTtbojxa9ierPCsonCMFkiwugv3Gxztuf+vrQgPcKawzPNnuZ7PrDyy/V14Y8sS3N5lif0I9nDMOTO4uMh3w6QbVeEJO8LkZkWRfAdrJdDhV2OmXoKliUErOXS5TPJZL/KFRXZzPTLs0fh0ZPLVYcwpq26n0TXBr1B9m1++IhgJFCeSu/Py9qvWKEDC7/YoxeUik5rZyBLn2GpJtmDE3JAgGwR+Z8Aw7ln4+9JLkYvO+cl3Bz2kOyclij1e1d8H3O7Ny1zYmzRW9obILBxqyGRb7ud9oiFKMrdJr0+L1bS+TPVYA38Ma1dHY0F9DZO2fq31xo1bySv13pJmWUJd/lSzUPPYXm6ZjVmJ0Iaes46zjDhcpSDN9rgcqIpwaj8WLcuRgFHV+GBjhxbRRTshk/7EXmB3u6fctRgXXnxlx379yhsKMx1TvXH5I1BlGMQOW9PnJHUb+wmqW9p8p2K0ADqEKx45OY6qK54IHq6tcbq6mn1LYwL8GXIkZEcbqLZ7IblhU3HUc0tyuiSnBkmLP2kt55vXzJwGnIYKaiwMY9k5jkPLXOaarCquSZq+ahjw== awp@thinkpad-e585"
         ];
     };
   };
@@ -110,10 +113,18 @@
     };
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+    };
+    crossSystem = {
+      config = "aarch64-unknown-linux-gnu";
+      system = "aarch64-linux";
+    };
   };
+
   powerManagement.cpuFreqGovernor = "ondemand";
   system.stateVersion = "20.09";
   swapDevices = [ { device = "/swapfile"; size = 2048; } ];
+
 }
