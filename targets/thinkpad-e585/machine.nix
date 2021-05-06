@@ -51,8 +51,8 @@ in {
       };
     };
     kernelPackages = linuxPackages_latest_hardened;
-
     kernelParams = [ "quiet acpi_osi=Linux" "acpi_backlight=vendor" ];
+    binfmt.emulatedSystems = [ "aarch64-linux" ]; # https://nixos.wiki/wiki/NixOS_on_ARM#Compiling_through_QEMU # Build rpi on x86
   };
 
   fileSystems."/mnt/truenas" = {

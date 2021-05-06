@@ -21,7 +21,6 @@
   # replicates the default behaviour.
   networking = {
     hostName = "apu-router";
-    nameservers = [ "8.8.8.8" "8.8.4.4" ];
     firewall = {
       enable = true;
       allowPing = true;
@@ -80,7 +79,6 @@
 
     dnsmasq = {
       enable = true;
-      servers = [ "8.8.8.8" "8.8.4.4" ];
       extraConfig = ''
         domain=lan
         interface=wlp5s0
