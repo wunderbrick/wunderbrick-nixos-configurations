@@ -58,10 +58,17 @@
 
   networking = {
     hostName = "rpi4-0"; # Define your hostname.
-    networkmanager = {
+    wireless = {
       enable = true;
+      extraConfig =
+        ''
+        network={
+            ssid="VeryFunctional"
+            psk="duck flash single plasma hero 19"
+        }
+        '';
     };
-    firewall = { allowedTCPPorts = [ 22 ]; };
+    firewall = { allowedTCPPorts = [ 22 80 443 9091 ]; };
   };
 
   environment.systemPackages = with pkgs; [

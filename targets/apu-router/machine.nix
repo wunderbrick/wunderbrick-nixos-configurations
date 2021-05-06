@@ -21,7 +21,7 @@
   # replicates the default behaviour.
   networking = {
     hostName = "apu-router";
-    nameservers = [ "127.0.0.1" ];
+    nameservers = [ "8.8.8.8" "8.8.4.4" ];
     firewall = {
       enable = true;
       allowPing = true;
@@ -70,11 +70,17 @@
       wpaPassphrase = "duck flash single plasma hero 19"; #import ./passphrase.nix;
       hwMode = "g";
       channel = 10;
+      extraConfig = ''
+        rsn_pairwise=CCMP
+        ieee80211n=1
+        ht_capab=[SHORT-GI-40][HT40+][HT40-][DSSS_CCK-40]
+        wmm_enabled=1
+      '';
     };
 
     dnsmasq = {
       enable = true;
-      servers = [ "127.0.0.1" ];
+      servers = [ "8.8.8.8" "8.8.4.4" ];
       extraConfig = ''
         domain=lan
         interface=wlp5s0
@@ -84,10 +90,10 @@
         dhcp-range=192.168.1.10,192.168.1.254,24h
         dhcp-range=192.168.2.10,192.168.2.254,24h
         dhcp-range=192.168.3.10,192.168.3.254,24h
+        dhcp-host=rpi4-0,192.168.1.11
         dhcp-host=truenas,192.168.2.11
         dhcp-host=truenas-transmission-vm,192.168.2.12
         dhcp-host=truenas-irc-client,192.168.2.13
-        dhcp-host=rpi4-0,192.168.3.11
       '';
     };
   };
