@@ -184,7 +184,7 @@ gaps outer 10
 hide_edge_borders smart
 smart_gaps on
 
-output "*" bg /home/awp/Pictures/walls/positron-dream/mirroring.png fill
+output "*" bg /home/awp/Pictures/walls/kewl-lo-poly.jpeg fill
 
 exec redshift -l 33:-112 -t 3600:3600 -g 0.8 -m wayland -v
 
