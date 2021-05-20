@@ -12,7 +12,7 @@ let
   selectedPkgs = with allPkgs;
     nixExtras ++ haskellStuff ++ arduinoTools ++ devDatabase ++ sharedDevTools
     ++ editors ++ terminalsEtc ++ utils ++ audioAndVideo ++ desktopConveniences
-    ++ gnomeStuff ++ browsers ++ games ++ chat ++ office ++ photos
+    ++ gnomeStuff ++ accesibility ++ browsers ++ games ++ chat ++ office ++ photos
     ++ securityPrivacy ++ torrents ++ iconThemes ++ misc;
 in {
   imports = [
@@ -24,9 +24,10 @@ in {
     ../../shared/system-attributes/services.nix
     ../../shared/system-attributes/programs.nix
     ../../shared/system-attributes/security.nix
-    ../../shared/system-attributes/xfce.nix
+    ../../shared/system-attributes/gnome3.nix
     ../../shared/system-attributes/xserver.nix
     ../../shared/system-attributes/databases.nix
+    ../../shared/system-attributes/accessibility.nix
   ] ++ [ sway ];
 
   boot = {
@@ -50,8 +51,8 @@ in {
         mitigateDMAAttacks = true;
       };
     };
-    kernelPackages = linuxPackages_latest_hardened;
-    kernelParams = [ "quiet acpi_osi=Linux" "acpi_backlight=vendor" ];
+    kernelPackages = linuxPackages_latest; #_hardened;
+    kernelParams = [ "quiet acpi_osi=Linux" "acpi_backlight=native" ];
     binfmt.emulatedSystems = [ "aarch64-linux" ]; # https://nixos.wiki/wiki/NixOS_on_ARM#Compiling_through_QEMU # Build rpi on x86
   };
 
@@ -89,7 +90,7 @@ in {
 
   nixpkgs.config = { allowUnfree = true; };
 
-  environment.systemPackages = [ microcodeAmd ] ++ selectedPkgs;
+  environment.systemPackages = [ microcodeAmd google-chrome ] ++ selectedPkgs;
 
   users = {
     users = {

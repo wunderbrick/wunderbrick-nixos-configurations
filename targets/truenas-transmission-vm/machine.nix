@@ -13,9 +13,18 @@ in {
     ../../shared/system-attributes/ssh-strict.nix
   ];
 
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    kernel.sysctl = {
+      "net.ipv4.ip_forward" = 1;
+      "net.ipv6.conf.all.disable_ipv6" = 1;
+      "net.ipv6.conf.default.disable_ipv6" = 1;
+      "net.ipv6.conf.lo.disable_ipv6" = 1;
+      "net.ipv6.conf.eth0.disable_ipv6" = 1;
+      };
   };
 
   fileSystems."/mnt/truenas" = {
@@ -28,11 +37,13 @@ in {
     hostName = "truenas-transmission-vm";
     useDHCP = false;
     interfaces.enp0s4.useDHCP = true;
-    firewall.allowedTCPPorts = [
-      22
-      9091
-      51413 # Transmission
-    ];
+    firewall = {
+      allowedTCPPorts = [
+        22
+        9091
+        51413 # Transmission
+      ];
+    };
   };
 
   time.timeZone = "America/New_York";
@@ -63,6 +74,17 @@ in {
   };
 
   services = {
+    #openvpn.servers = {
+    #  ny-29-p2p = {
+    #    config = import ./us-ny-29.protonvpn.com.udp.ovpn.nix;
+    #    up = "echo nameserver $nameserver | ${pkgs.openresolv}/sbin/resolvconf -m 0 -a $dev";
+    #    down = "${pkgs.openresolv}/sbin/resolvconf -d $dev";
+    #    authUserPass = {
+    #      username = (import ../../secrets/ovpn-secrets.nix).username;
+    #      password = (import ../../secrets/ovpn-secrets.nix).password;
+    #    };
+    #  };
+    #};
     transmission = {
       enable = true;
       settings = {

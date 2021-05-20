@@ -21,6 +21,7 @@ with pkgs; {
       xorg.xhost # Allow root to display applications on desktop for things like gparted. Run xhost +SI:localuser:root before gparted.
       libappindicator # tray
       libdbusmenu-gtk3 # tray
+      wlr-randr
     ];
   };
 

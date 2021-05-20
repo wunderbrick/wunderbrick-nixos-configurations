@@ -94,6 +94,10 @@ with pkgs; rec {
     mpc_cli
   ];
 
+  accesibility = [
+    gnome3.orca
+  ];
+
   desktopConveniences = [
     dolphin
     gnome3.nautilus
@@ -108,7 +112,7 @@ with pkgs; rec {
     pantheon.elementary-icon-theme
     arc-icon-theme
     gnome3.adwaita-icon-theme
-    kdeFrameworks.kiconthemes
+    #kdeFrameworks.kiconthemes
     lxqt.lxqt-themes
     numix-icon-theme
     numix-icon-theme-circle
