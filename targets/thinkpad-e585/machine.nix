@@ -11,8 +11,6 @@ let
   sway =
     import ../../shared/system-attributes/sway.nix { inherit config pkgs; };
 
-  sshConfig = import ../../shared/ssh_config.nix;
-
   selectedPkgs = with allPkgs;
     nixExtras ++ haskellStuff ++ arduinoTools ++ devDatabase ++ sharedDevTools
     ++ editors ++ terminalsEtc ++ utils ++ audioAndVideo ++ desktopConveniences
@@ -124,7 +122,7 @@ in {
     };
   };
 
-  programs.ssh.extraConfig = sshConfig;
+  programs.ssh.extraConfig = builtins.readFile "/home/awp/.ssh/config"; #sshConfig;
 
   # This value determines the NixOS release with which your system is to be
   # compatible, in order to avoid breaking some software such as database

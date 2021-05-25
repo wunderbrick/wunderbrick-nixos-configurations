@@ -4,7 +4,7 @@ thinkpad-e585:
 	nixos-rebuild -I nixos-config=./targets/thinkpad-e585/machine.nix switch
 
 flake-thinkpad-e585:
-	nixos-rebuild switch --flake .#thinkpad-e585
+	nixos-rebuild switch --flake .#thinkpad-e585 --impure
 
 ############################################################################################################################
 

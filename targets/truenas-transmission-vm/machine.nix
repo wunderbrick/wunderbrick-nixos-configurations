@@ -117,21 +117,13 @@ in {
   };
 
   services = {
-    openssh.hostKeys = [
-      {
-        type = "ed25519";
-        path = /home/awp/.ssh/id_ed25519;
-      }
-      {
-        bits = 4096;
-        path = "/etc/ssh/ssh_host_rsa_key";
-        type = "rsa";
-      }
-      {
-        path = "/etc/ssh/ssh_host_ed25519_key";
-        type = "ed25519";
-      }
-    ];
+    openssh.hostKeys = options.services.openssh.hostKeys.default ++ [
+        {
+          type = "ed25519";
+          path = /home/awp/.ssh/id_ed25519; # Requires --impure flag with Flakes
+        }
+      ];
+    };
     openvpn.servers = {
       ny-29-p2p = {
         config = import ./us-ny-29.protonvpn.com.udp.ovpn.nix;
