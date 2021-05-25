@@ -2,15 +2,9 @@
 
 {
   inputs = {
-    nixpkgs = {
-      url = "github:nixos/nixpkgs/nixos-20.09";
-    };
-    #rpi4pkgs = {
-    #  url = "github:NixOS/nixpkgs/102eb68ceecbbd32ab1906a53ef5a7269dc9794a";
-    #};
-    agenix = {
-      url = "github:ryantm/agenix";
-    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-20.09";
+    #rpi4pkgs.url = "github:NixOS/nixpkgs/102eb68ceecbbd32ab1906a53ef5a7269dc9794a";
+    agenix.url = "github:ryantm/agenix";
   };
 
   outputs = { self, nixpkgs, agenix }: #, rpi4pkgs }:

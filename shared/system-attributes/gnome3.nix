@@ -3,7 +3,10 @@
 {
   services = {
     xserver = {
-      displayManager.gdm = { enable = true; };
+      displayManager = {
+        gdm = { enable = true; };
+        defaultSession = "sway";
+      };
       desktopManager.gnome3 = { enable = true; };
     };
   };

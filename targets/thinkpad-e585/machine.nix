@@ -3,10 +3,14 @@
 with pkgs;
 let
   user = "awp";
+
   hostName = "thinkpad-e585";
+
   allPkgs = import ../../shared/packages/pkgs-list.nix { inherit pkgs; };
+
   sway =
     import ../../shared/system-attributes/sway.nix { inherit config pkgs; };
+
   sshConfig = import ../../shared/ssh_config.nix;
 
   selectedPkgs = with allPkgs;
@@ -24,7 +28,6 @@ in {
     ../../shared/system-attributes/services.nix
     ../../shared/system-attributes/programs.nix
     ../../shared/system-attributes/security.nix
-    ../../shared/system-attributes/gnome3.nix
     ../../shared/system-attributes/xserver.nix
     ../../shared/system-attributes/databases.nix
     ../../shared/system-attributes/accessibility.nix
@@ -83,12 +86,20 @@ in {
 
   sound.enable = true;
 
-  services.blueman.enable = true;
+  services = {
+    blueman.enable = true;
+    xserver.displayManager = {
+      gdm.enable = true;
+    };
+  };
 
   xdg.icons.enable = true;
   gtk.iconCache.enable = true;
 
-  nixpkgs.config = { allowUnfree = true; };
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [ "ffmpeg-2.8.17" ];
+  };
 
   environment.systemPackages = [ microcodeAmd ] ++ selectedPkgs;
 

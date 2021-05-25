@@ -1,9 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, options, ... }:
 
 {
   imports = [
     ./hardware-configuration.nix
-    ../../shared/system-attributes/ssh-strict.nix
   ];
 
   boot = {
@@ -16,9 +15,6 @@
 
   time.timeZone = "America/New_York";
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
   networking = {
     hostName = "apu-router";
     firewall = {
@@ -60,13 +56,27 @@
     };
   };
 
+  age.secrets = {
+    wpa-psk-file = {
+      file = ../../secrets/wpa-psk-file.age;
+    };
+  };
+
   services = {
+    openssh = {
+      enable = true;
+      passwordAuthentication = false;
+      hostKeys = options.services.openssh.hostKeys.default ++ [
+        {
+          type = "ed25519";
+          path = /home/awp/.ssh/id_ed25519; # Requires --impure flag with Flakes
+        }
+      ];
+    };
     hostapd = {
       enable = true;
       interface = "wlp5s0";
       ssid = "VeryFunctional";
-      # TODO: Handle secrets better
-      wpaPassphrase = "duck flash single plasma hero 19"; #import ./passphrase.nix;
       hwMode = "g";
       channel = 10;
       extraConfig = ''
@@ -74,6 +84,8 @@
         ieee80211n=1
         ht_capab=[SHORT-GI-40][HT40+][HT40-][DSSS_CCK-40]
         wmm_enabled=1
+        wpa_key_mgmt=WPA-PSK
+        wpa_psk_file=/run/secrets/wpa-psk-file
       '';
     };
 

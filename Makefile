@@ -28,7 +28,7 @@ truenas-transmission-vm:
 	nixos-rebuild -I nixos-config=./targets/truenas-transmission-vm/machine.nix --target-host truenas-transmission-vm switch
 
 flake-truenas-transmission-vm:
-	nixos-rebuild switch --flake .#truenas-transmission-vm --target-host truenas-transmission-vm --build-host localhost
+	nixos-rebuild switch --flake .#truenas-transmission-vm --target-host truenas-transmission-vm --build-host localhost --impure
 
 ############################################################################################################################
 
@@ -36,7 +36,7 @@ apu-router:
 	nixos-rebuild -I nixos-config=./targets/apu-router/machine.nix --target-host apu-router switch
 
 flake-apu-router:
-	nixos-rebuild switch --flake .#apu-router --target-host apu-router --build-host localhost
+	nixos-rebuild switch --flake .#apu-router --target-host apu-router --build-host localhost --impure
 
 ############################################################################################################################
 

@@ -11,6 +11,7 @@ with pkgs; rec {
     stack
     cabal2nix
     cabal-install
+    haskellPackages.brittany
   ];
 
   elixirStuff = [
@@ -162,7 +163,7 @@ with pkgs; rec {
 
   photos = [ feh viu krita gimp inkscape aseprite-unfree ];
 
-  securityPrivacy = [ macchanger networkmanager-openvpn openvpn networkmanagerapplet gnupg protonvpn-cli ];
+  securityPrivacy = [ macchanger networkmanager-openvpn openvpn networkmanagerapplet gnupg protonvpn-cli rage ];
 
   torrents = [ transmission-gtk ];
 

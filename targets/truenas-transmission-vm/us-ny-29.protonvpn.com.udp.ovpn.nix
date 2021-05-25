@@ -1,4 +1,10 @@
 ''
+################################
+######## NIXOS CHANGES: ########
+######## auth-user-pass ########
+######## group #################
+################################
+
 # ==============================================================================
 # Copyright (c) 2016-2020 Proton Technologies AG (Switzerland)
 # Email: contact@protonvpn.com
@@ -56,9 +62,12 @@ persist-tun
 reneg-sec 0
 
 remote-cert-tls server
-auth-user-pass
+auth-user-pass /run/secrets/protonvpn-auth-user-pass
 pull
 fast-io
+
+user openvpn
+group openvpn
 
 script-security 2
 #up /etc/openvpn/update-resolv-conf
