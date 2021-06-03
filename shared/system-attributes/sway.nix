@@ -85,13 +85,35 @@ with pkgs; {
     };
   };
 
-  services.redshift = {
-    enable = true;
-    package = redshift-wlr;
-    extraOptions = [ "-m wayland screen=HDMI1" ];
-    temperature = {
-      day = 3600;
-      night = 3600;
+  # Not starting service, not sure why. Starting in sway config for now.
+  #services.redshift = {
+  #  enable = true;
+  #  package = redshift-wlr;
+  #  extraOptions = [
+  #    "-m wayland"
+  #    "-l 33:-112"
+  #    "-g 0.8"
+  #     "screen=eDP-1,DP2,HDMI-A-1"
+  #     "screen=0,1,2"
+  #    ];
+  #  temperature = {
+  #    day = 5700;
+  #    night = 3600;
+  #  };
+  #};
+
+  systemd.user.services.kanshi = {
+    description = "Kanshi output autoconfig ";
+    wantedBy = [ "graphical-session.target" ];
+    partOf = [ "graphical-session.target" ];
+    serviceConfig = {
+      # kanshi doesn't have an option to specifiy config file yet, so it looks
+      # at .config/kanshi/config
+      ExecStart = ''
+        ${pkgs.kanshi}/bin/kanshi
+      '';
+      RestartSec = 5;
+      Restart = "always";
     };
   };
 

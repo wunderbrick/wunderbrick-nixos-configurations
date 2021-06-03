@@ -12,7 +12,7 @@ thinkpad-x1:
 	nixos-rebuild -I nixos-config=./targets/thinkpad-x1/machine.nix --target-host thinkpad-x1 switch
 
 flake-thinkpad-x1:
-	nixos-rebuild switch --flake .#thinkpad-x1 --target-host thinkpad-x1 --build-host localhost
+	nixos-rebuild switch --flake .#thinkpad-x1 --target-host thinkpad-x1 --build-host localhost --impure
 
 ############################################################################################################################
 
@@ -52,4 +52,4 @@ rpi4-0:
 	nixos-rebuild -I nixos-config=./targets/rpi4-0/machine.nix --target-host rpi4-0 switch
 
 flake-rpi4-0:
-	nixos-rebuild switch --flake .#rpi4-0 --target-host rpi4-0 --build-host localhost
+	nixos-rebuild switch --flake .#rpi4-0 --target-host rpi4-0 --build-host localhost --impure

@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
+{ config, pkgs, options, ... }:
 
 let
+  openVpnUid = "998";
+
   sshPublicKeys = [
     "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDaoxwVSPrjdkkGWAdnuRrpF7zyHG+kQTv+ssnjfO/T49SDmzawwAwVnW9hcr22XeFhv7EPUcTCTR19f+J98jgwYmZZYTsf5ud/crdRSl+G3Ku+uMC3EKXTp9bB3KtmSm5vA2LMt9hdMdW4DVabT/z3Y1NLIotHquUlayqb94t83Vk8qFlK5Eia20SxVE8ec9YqmtibFJYjH6f5yEldx5c/ADXQpmH/yXgH3JVaaoLyzv8NIXVx4gQQYnJ+PVsVaHjuW2pQmTHJVK2ETQ49VeF1LBQ0yzLrqhDoaKX6EyWncbztzpd/qRI3Aur03Y7OfwBOYXHdF8pMQNWD5PxyofrN40WPS49lxxQmsq/0vvA7t+gm/PDMPP6A5pitVEDdNlHyLUzgAGIasZ8sq6KIHD1z7KAIgZ2LhVi8AsY50+yjeNoQZnVFuloC6HFg1RlwZIBAuPzER4IH8FTTTE7FIdv3b7U3EpBZ7HA1bHUrz4dxwbkv6UPU58z/dbGfq1sDQj5vu+ok3jtuPfnVCd55Vjaq1tF7QGxTKljETvQNRlFFEv4Tnnx4U3ip2iW8kEwKBpkzNRcD56YW5KMZOeY2rG4cNyd0XwaiyiRf0mSTdRk8XOD8LeBlHlp18bu5cl56y8aO2hYV8/wPzrBPsD2F6C7hmnSbgUuR6VV15jywxShIpw== awp@nixos-e585"
   ];
@@ -36,41 +38,44 @@ in {
   networking = {
     hostName = "truenas-transmission-vm";
     useDHCP = false;
-    interfaces.enp0s4.useDHCP = true;
+    interfaces.enp0s4 = {
+      useDHCP = true;
+      ipv4.routes = [
+        { address = "192.168.1.0"; prefixLength = 24; via = "192.168.2.1"; }
+        { address = "192.168.3.0"; prefixLength = 24; via = "192.168.2.1"; }
+      ];
+    };
     firewall = {
       allowedTCPPorts = [
         22
       ];
       extraCommands = ''
-      #iptables -A OUTPUT -j ACCEPT -m owner --gid-owner openvpn
-      #iptables -A OUTPUT -j ACCEPT -o tun+
+        # Flush the tables. This may cut the system's internet.
+        iptables -F
 
-      iptables -A nixos-fw -p tcp --source 192.168.1.0/24 -j nixos-fw-accept
-      iptables -A nixos-fw -p tcp --source 192.168.2.0/24 -j nixos-fw-accept
-      iptables -A nixos-fw -p tcp --source 192.168.3.0/24 -j nixos-fw-accept
+        # We should permit replies to traffic we've sent out.
+        iptables -A INPUT -j ACCEPT -m state --state ESTABLISHED
+        iptables -A OUTPUT -j ACCEPT -o lo
 
-      iptables -A nixos-fw -p udp --source 192.168.1.0/24 -j nixos-fw-accept
-      iptables -A nixos-fw -p udp --source 192.168.2.0/24 -j nixos-fw-accept
-      iptables -A nixos-fw -p udp --source 192.168.3.0/24 -j nixos-fw-accept
+        # LAN in
+        iptables -A INPUT -s 192.168.1.0/24 -i enp0s4 -j ACCEPT
+        iptables -A INPUT -s 192.168.2.0/24 -i enp0s4 -j ACCEPT
+        iptables -A INPUT -s 192.168.3.0/24 -i enp0s4 -j ACCEPT
 
-      #iptables -P OUTPUT DROP
-      #iptables -P INPUT DROP
+        # LAN out
+        iptables -A OUTPUT -d 192.168.1.0/24 -o enp0s4 -j ACCEPT
+        iptables -A OUTPUT -d 192.168.2.0/24 -o enp0s4 -j ACCEPT
+        iptables -A OUTPUT -d 192.168.3.0/24 -o enp0s4 -j ACCEPT
+
+        # Let the VPN client communicate with the outside world.
+        iptables -A INPUT -p udp -m udp --sport 1194 -j ACCEPT
+        iptables -A OUTPUT -p udp -m udp --dport 1194 -j ACCEPT
+        iptables -A OUTPUT -o tun+ -j ACCEPT
+
+        # The default policy, if no other rules match, is to refuse traffic.
+        iptables -P OUTPUT DROP
+        iptables -P INPUT DROP
       '';
-      extraStopCommands = ''
-      #iptables -D OUTPUT -j ACCEPT -m owner --gid-owner openvpn | true
-      #iptables -D OUTPUT -j ACCEPT -o tun+
-
-      iptables -D nixos-fw -p tcp --source 192.168.1.0/24 -j nixos-fw-accept
-      iptables -D nixos-fw -p tcp --source 192.168.2.0/24 -j nixos-fw-accept
-      iptables -D nixos-fw -p tcp --source 192.168.3.0/24 -j nixos-fw-accept
-
-      iptables -D nixos-fw -p udp --source 192.168.1.0/24 -j nixos-fw-accept
-      iptables -D nixos-fw -p udp --source 192.168.2.0/24 -j nixos-fw-accept
-      iptables -D nixos-fw -p udp --source 192.168.3.0/24 -j nixos-fw-accept
-
-      #iptables -D OUTPUT DROP
-      #iptables -D INPUT DROP
-      #'';
     };
   };
 
@@ -122,8 +127,7 @@ in {
           type = "ed25519";
           path = /home/awp/.ssh/id_ed25519; # Requires --impure flag with Flakes
         }
-      ];
-    };
+    ];
     openvpn.servers = {
       ny-29-p2p = {
         config = import ./us-ny-29.protonvpn.com.udp.ovpn.nix;

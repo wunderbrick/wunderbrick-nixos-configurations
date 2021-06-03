@@ -8,9 +8,6 @@ let
 
   allPkgs = import ../../shared/packages/pkgs-list.nix { inherit pkgs; };
 
-  sway =
-    import ../../shared/system-attributes/sway.nix { inherit config pkgs; };
-
   selectedPkgs = with allPkgs;
     nixExtras ++ haskellStuff ++ arduinoTools ++ devDatabase ++ sharedDevTools
     ++ editors ++ terminalsEtc ++ utils ++ audioAndVideo ++ desktopConveniences
@@ -26,10 +23,10 @@ in {
     ../../shared/system-attributes/services.nix
     ../../shared/system-attributes/programs.nix
     ../../shared/system-attributes/security.nix
-    ../../shared/system-attributes/xserver.nix
     ../../shared/system-attributes/databases.nix
     ../../shared/system-attributes/accessibility.nix
-  ] ++ [ sway ];
+    ../../shared/system-attributes/sway.nix
+  ];
 
   boot = {
     loader = {
@@ -86,8 +83,12 @@ in {
 
   services = {
     blueman.enable = true;
-    xserver.displayManager = {
-      gdm.enable = true;
+    xserver = {
+      enable = true;
+      displayManager = {
+       gdm.enable = true;
+      };
+      layout = "us";
     };
   };
 
@@ -99,7 +100,7 @@ in {
     permittedInsecurePackages = [ "ffmpeg-2.8.17" ];
   };
 
-  environment.systemPackages = [ microcodeAmd ] ++ selectedPkgs;
+  environment.systemPackages = selectedPkgs;
 
   users = {
     users = {

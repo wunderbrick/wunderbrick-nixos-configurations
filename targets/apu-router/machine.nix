@@ -100,7 +100,7 @@
         dhcp-range=192.168.1.10,192.168.1.254,24h
         dhcp-range=192.168.2.10,192.168.2.254,24h
         dhcp-range=192.168.3.10,192.168.3.254,24h
-        dhcp-host=rpi4-0,192.168.1.11
+        dhcp-host=rpi4-0,192.168.3.11
         dhcp-host=truenas,192.168.2.11
         dhcp-host=truenas-transmission-vm,192.168.2.12
         dhcp-host=truenas-irc-client,192.168.2.13

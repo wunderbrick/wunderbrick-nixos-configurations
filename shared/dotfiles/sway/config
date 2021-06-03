@@ -186,7 +186,7 @@ smart_gaps on
 
 output "*" bg /home/awp/Pictures/walls/kewl-lo-poly.jpeg fill
 
-exec redshift -l 33:-112 -t 3600:3600 -g 0.8 -m wayland -v
+exec redshift -l 33:-112 -t 3600:3600 -g 0.8 -m wayland screen=0,1,2
 
 bar {
         swaybar_command waybar

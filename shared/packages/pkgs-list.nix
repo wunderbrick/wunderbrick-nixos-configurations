@@ -161,7 +161,9 @@ with pkgs; rec {
 
   office = [ zathura qpdfview calibre libreoffice ];
 
-  photos = [ feh viu krita gimp inkscape aseprite-unfree ];
+  photos = [
+    feh viu krita gimp inkscape #aseprite-unfree
+  ];
 
   securityPrivacy = [ macchanger networkmanager-openvpn openvpn networkmanagerapplet gnupg protonvpn-cli rage ];
 
