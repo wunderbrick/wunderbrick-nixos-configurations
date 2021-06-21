@@ -3,6 +3,7 @@
 ######## NIXOS CHANGES: ########
 ######## auth-user-pass ########
 ######## group #################
+######## resolve-conf stuff? ###
 ################################
 
 # ==============================================================================
@@ -66,8 +67,8 @@ auth-user-pass /run/secrets/protonvpn-auth-user-pass
 pull
 fast-io
 
-user openvpn
-group openvpn
+# user openvpn
+# group openvpn
 
 script-security 2
 #up /etc/openvpn/update-resolv-conf

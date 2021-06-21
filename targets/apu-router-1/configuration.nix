@@ -15,8 +15,11 @@
 
   time.timeZone = "America/New_York";
 
+  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
+  # Per-interface useDHCP will be mandatory in the future, so this generated config
+  # replicates the default behaviour.
   networking = {
-    hostName = "apu-router";
+    hostName = "apu-router-1";
     firewall = {
       enable = true;
       allowPing = true;
@@ -56,27 +59,15 @@
     };
   };
 
-  age.secrets = {
-    wpa-psk-file = {
-      file = ../../secrets/wpa-psk-file.age;
-    };
-  };
-
   services = {
     openssh = {
       enable = true;
       passwordAuthentication = false;
-      hostKeys = options.services.openssh.hostKeys.default ++ [
-        {
-          type = "ed25519";
-          path = /home/awp/.ssh/id_ed25519; # Requires --impure flag with Flakes
-        }
-      ];
     };
     hostapd = {
       enable = true;
       interface = "wlp5s0";
-      ssid = "VeryFunctional";
+      ssid = "Serenity";
       hwMode = "g";
       channel = 10;
       extraConfig = ''
@@ -85,7 +76,7 @@
         ht_capab=[SHORT-GI-40][HT40+][HT40-][DSSS_CCK-40]
         wmm_enabled=1
         wpa_key_mgmt=WPA-PSK
-        wpa_psk_file=/run/secrets/wpa-psk-file
+        wpa_psk=56c03456212675151217823d71054f66a360d1dcffeb4b3272c6432c136cc8aa
       '';
     };
 
@@ -100,7 +91,7 @@
         dhcp-range=192.168.1.10,192.168.1.254,24h
         dhcp-range=192.168.2.10,192.168.2.254,24h
         dhcp-range=192.168.3.10,192.168.3.254,24h
-        dhcp-host=rpi4-0,192.168.3.11
+        dhcp-host=rpi4-0,192.168.1.11
         dhcp-host=truenas,192.168.2.11
         dhcp-host=truenas-transmission-vm,192.168.2.12
         dhcp-host=truenas-irc-client,192.168.2.13
@@ -127,5 +118,5 @@
     dates = "weekly";
   };
 
-  system.stateVersion = "20.09";
+  system.stateVersion = "21.05";
 }

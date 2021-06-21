@@ -1,3 +1,5 @@
+# CURRENTLY CANNOT CONNECT TO THIS BOX FROM LAN WHILE VPN IS RUNNING
+
 { config, pkgs, options, ... }:
 
 let
@@ -12,7 +14,6 @@ in {
   imports = [
     ./hardware-configuration.nix
     ./transmission.nix # Removed the chown and chmod for the destination dirs because they weren't working with the NFS share.
-    ../../shared/system-attributes/ssh-strict.nix
   ];
 
   boot = {
@@ -41,9 +42,18 @@ in {
     interfaces.enp0s4 = {
       useDHCP = true;
       ipv4.routes = [
-        { address = "192.168.1.0"; prefixLength = 24; via = "192.168.2.1"; }
-        { address = "192.168.3.0"; prefixLength = 24; via = "192.168.2.1"; }
+        {
+          address = "192.168.1.0";
+          prefixLength = 24;
+          via = "0.0.0.0";
+        }
       ];
+    };
+    iproute2 = {
+      enable = true;
+      rttablesExtraConfig = ''
+      128    enp0s4
+      '';
     };
     firewall = {
       allowedTCPPorts = [
@@ -122,15 +132,19 @@ in {
   };
 
   services = {
-    openssh.hostKeys = options.services.openssh.hostKeys.default ++ [
+    openssh = {
+      enable = true;
+      passwordAuthentication = false;
+      hostKeys = options.services.openssh.hostKeys.default ++ [
         {
           type = "ed25519";
           path = /home/awp/.ssh/id_ed25519; # Requires --impure flag with Flakes
         }
-    ];
+      ];
+    };
     openvpn.servers = {
       ny-29-p2p = {
-        config = import ./us-ny-29.protonvpn.com.udp.ovpn.nix;
+        config = import ./us-ny-29.protonvpn.com.udp.ovpn.nix; # Requires --impure flag with Flakes
         up = "echo nameserver $nameserver | ${pkgs.openresolv}/sbin/resolvconf -m 0 -a $dev";
         down = "${pkgs.openresolv}/sbin/resolvconf -d $dev";
       };

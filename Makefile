@@ -32,11 +32,19 @@ flake-truenas-transmission-vm:
 
 ############################################################################################################################
 
-apu-router:
-	nixos-rebuild -I nixos-config=./targets/apu-router/machine.nix --target-host apu-router switch
+apu-router-0:
+	nixos-rebuild -I nixos-config=./targets/apu-router-0/machine.nix --target-host apu-router-0 switch
 
-flake-apu-router:
-	nixos-rebuild switch --flake .#apu-router --target-host apu-router --build-host localhost --impure
+flake-apu-router-0:
+	nixos-rebuild switch --flake .#apu-router-0 --target-host apu-router-0 --build-host localhost --impure
+
+############################################################################################################################
+
+apu-router-1:
+	nixos-rebuild -I nixos-config=./targets/apu-router-1/machine.nix --target-host apu-router-1 switch
+
+flake-apu-router-1:
+	nixos-rebuild switch --flake .#apu-router-1 --target-host apu-router-1 --build-host localhost --impure
 
 ############################################################################################################################
 

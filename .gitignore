@@ -1,3 +1,4 @@
 shared/shells/euterpea/*.cfg
 .projectile
-targets/apu-router/passphrase.nix
+targets/apu-router-0/passphrase.nix
+targets/apu-router-1/passphrase.nix

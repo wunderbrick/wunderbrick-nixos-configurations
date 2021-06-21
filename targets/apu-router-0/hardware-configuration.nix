@@ -14,12 +14,12 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/e97613ac-d26b-43ee-8a6c-478c4d9b16f9";
+    { device = "/dev/disk/by-uuid/95ebe70f-5710-44de-b803-4abce39216a1";
       fsType = "ext4";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/69a64172-7503-4ae8-b5c3-3e11a0dca286"; }
+    [ { device = "/dev/disk/by-uuid/1d002f27-fd30-49bb-b11e-631897255245"; }
     ];
 
 }
